@@ -15,25 +15,32 @@ const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-module.exports = client => {
-  const category = client.channels.cache.find(c => c.id == categoryId && c.type == "category")
+module.exports = async client => {
+  const category = client.channels.cache.find(c => c.id == categoryId)
 
-  const ticketEmbed = new Discord.MessageEmbed()
-  .setColor('#0099ff')
-  .setTitle('Ticket Support')
-  .setDescription('click ticket for get secret support message')
+  let countChnLive = async chn => {
+    const countChn = await chn.cache.filter(c => c.name.includes('ticket-usr')).size
+    const react = ['🎟']
+    const ticketEmbed = new Discord.MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle('Ticket Support')
+    .setDescription(`Silahkan klik 🎟 untuk masuk channel support\n\n **Stok support __${countChn}/${maxSupport}__**`)
+
+    firstMsg(client, chnId, ticketEmbed, react)
+  }
+
+  countChnLive(client.channels)
+  client.on('channelCreate', c => countChnLive(c.guild.channels))
+  client.on('channelDelete', c => countChnLive(c.guild.channels))
 
   const welcomeTicketEmbed = new Discord.MessageEmbed()
   .setColor('#0099ff')
   .setTitle('Ticket Support')
-  .setDescription('Welcome to ticket support')
-
-  const react = ['🎟']
-
-  firstMsg(client, chnId, ticketEmbed, react)
+  .setDescription(`Selamat datang di channel support kami. Silahkan betanya masalah server ini disini. Channel ini akan dihapus jika tidak merespon sekitar 1 jam atau anda dapat menghapusnya dengan ketik \`${prefix}ticket delete\`.\n\nKetik \`${prefix}ticket help\` untuk info lebih lanjut.`)
 
   client.on('messageReactionAdd', async (r, u) => {
-    const supportchn = client.channels.cache.find(c => c.name == `ticket-usr${u.id}` && c.type == "text")
+    const supportchn = client.channels.cache.find(c => c.name == `ticket-usr${u.id}`)
+    const Channels = await client.channels.cache.filter(c => c.name.includes('ticket-usr'))
 
     if (r.message.channel.id === chnId) {
       if (u.id === botId) return
@@ -43,14 +50,7 @@ module.exports = client => {
           guild
         } = r.message.channel
 
-        const supChn = await guild.channels.cache.find(c => c.name.includes('ticket-usr'))
-
-        let countChn
-
-        if (!supChn) countChn = 0
-        else countChn = supChn.size
-
-        if (countChn === maxSupport) {
+        if (Channels.size === maxSupport) {
           u.send('support telah mencapai batas maxsimum')
           r.users.remove(u.id)
           return
@@ -70,7 +70,7 @@ module.exports = client => {
               })
             }
 
-            tc.updateOverwrite(guild.id, {
+            tc.updateOverwrite(serverId, {
               VIEW_CHANNEL: false
             })
 
@@ -90,11 +90,9 @@ module.exports = client => {
   })
 
   setInterval(async () => {
-    const Guild = client.guilds.cache.find(guild => guild.id = serverId)
-
     try {
-      const Channels = await Guild.channels.cache.find(c => c.name.includes('ticket-usr'))
-
+      const Channels = await client.channels.cache.filter(c => c.name.includes('ticket-usr'))
+      
       if (!Channels) return
 
       for (const Channel of Channels) {

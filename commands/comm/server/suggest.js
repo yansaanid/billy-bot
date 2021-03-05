@@ -40,6 +40,7 @@ module.exports = {
           name: 'Help (send to DM)',
           value: `\`${prefix}suggest -h\``
         })
+        .setDescription(`Commands: ${prefix}suggest or ${prefix}saran`)
         msg.author.send(helpEmbed)
         msg.delete()
         return

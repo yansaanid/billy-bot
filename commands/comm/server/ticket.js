@@ -1,3 +1,6 @@
+const Discord = require('discord.js')
+const {prefix} = require('@config/main.json')
+
 module.exports = {
   commands: ['ticket',
     'support'],
@@ -17,7 +20,19 @@ module.exports = {
         break;
 
       case 'help':
-        msg.channel.send('test')
+        const helpEmbed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle('Syntax for Ticket support')
+        .setDescription(`Commands: \`${prefix}ticket\` or \`${prefix}support\`\nThis channel automatically **deleted** after not **respond** in **1 hour**`)
+        .addFields({
+          name: 'Delete channel support',
+          value: `\`${prefix}ticket delete\``
+        }, {
+          name: 'Help',
+          value: `\`${prefix}ticket help\``
+        })
+        .setFooter(`Commands: ${prefix}ticket or ${prefix}support`)
+        msg.channel.send(helpEmbed)
         break;
     }
 
