@@ -90,29 +90,22 @@ module.exports = async client => {
   })
 
   setInterval(async () => {
-    try {
       const Channels = await client.channels.cache.filter(c => c.name.includes('ticket-usr'))
       
       if (!Channels) return
 
-      for (const Channel of Channels) {
-        const lastTime = await Channel.messages.fetch({
-          limit: 1
-        }).then(async mes => await mes.first().createdTimestamp)
-        const now = Date.now()
+      Channels.forEach( async Channel => {
+        const lastTime = await Channel.messages.fetch({ limit: 1 }).then(async mes => await mes.last().createdTimestamp)
+        let now = Date.now()
 
-        try {
-          if (!(lastTime + (60*60*1000)) < now) return
-
+          if ((lastTime + (60*60*1000)) < now) {
           console.log(`This ${Channel.name} deleted after 1 hour no respond`)
           Channel.delete()
           await sleep(8*1000)
-        } catch (e) {}
-      }
+          }
+          
+      })
 
-    } catch (e) {
-      await sleep(8*1000)
-    }
   },
     2000)
 }
