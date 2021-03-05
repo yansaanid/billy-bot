@@ -9,13 +9,12 @@ const {
   prefix,
   maxSupport
 } = require('@config/main.json')
-const allowView = [...adminId, botId]
-
 const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 module.exports = async client => {
+const allowView = [...adminId, botId]
   const category = client.channels.cache.find(c => c.id == categoryId)
 
   let countChnLive = async chn => {
@@ -90,21 +89,23 @@ module.exports = async client => {
   })
 
   setInterval(async () => {
-      const Channels = await client.channels.cache.filter(c => c.name.includes('ticket-usr'))
-      
-      if (!Channels) return
+    const Channels = await client.channels.cache.filter(c => c.name.includes('ticket-usr'))
 
-      Channels.forEach( async Channel => {
-        const lastTime = await Channel.messages.fetch({ limit: 1 }).then(async mes => await mes.last().createdTimestamp)
-        let now = Date.now()
+    if (!Channels) return
 
-          if ((lastTime + (60*60*1000)) < now) {
-          console.log(`This ${Channel.name} deleted after 1 hour no respond`)
-          Channel.delete()
-          await sleep(8*1000)
-          }
-          
-      })
+    Channels.forEach(async Channel => {
+      const lastTime = await Channel.messages.fetch({
+        limit: 1
+      }).then(async mes => await mes.last().createdTimestamp)
+      let now = Date.now()
+
+      if ((lastTime + (60*60*1000)) < now) {
+        console.log(`This ${Channel.name} deleted after 1 hour no respond`)
+        Channel.delete()
+        await sleep(8*1000)
+      }
+
+    })
 
   },
     2000)

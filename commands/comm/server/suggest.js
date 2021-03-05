@@ -93,8 +93,8 @@ module.exports = {
           m.react("👍")
           m.react("👎")
         })
-      }
-    },
+    }
+  },
     3000)
-  }
+}
 }

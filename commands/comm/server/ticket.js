@@ -1,5 +1,7 @@
 const Discord = require('discord.js')
-const {prefix} = require('@config/main.json')
+const {
+  prefix
+} = require('@config/main.json')
 
 module.exports = {
   commands: ['ticket',
@@ -12,7 +14,7 @@ module.exports = {
     const authorId = msg.author.id
 
     if (!msg.channel.name.includes(`ticket-usr`)) return
-    
+
     switch (args[0]) {
       case 'delete':
         msg.channel.delete()
