@@ -1,18 +1,27 @@
 {
   "name": "billy-bot",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.5",
+  "description": "a bot for node to discord",
+  "bugs": "https://github.com/yansaanid/billy-bot/issues",
+  "repository": "github:yansaanid/billy-bot",
   "main": "index.js",
   "dependencies": {
     "colors": "^1.4.0",
     "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "env": "^0.0.2",
+    "express": "^4.17.1",
     "mongoose": "^5.11.18"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "billy-bot",
+    "billy",
+    "discord"
+  ],
+  "author": "Ian Ardiansyah",
   "license": "ISC"
 }

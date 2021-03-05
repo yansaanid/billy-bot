@@ -5,7 +5,9 @@ const {
   ticketKatId: categoryId,
   ticketChnId: chnId,
   serverId,
-  adminId
+  adminId,
+  prefix,
+  maxSupport
 } = require('../config/main.json')
 const allowView = [...adminId, botId]
 
@@ -48,7 +50,7 @@ module.exports = client => {
         if (!supChn) countChn = 0
         else countChn = supChn.size
 
-        if (countChn === 10) {
+        if (countChn === maxSupport) {
           u.send('support telah mencapai batas maxsimum')
           r.users.remove(u.id)
           return

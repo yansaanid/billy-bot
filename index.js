@@ -1,9 +1,11 @@
 const path = require('path')
 const fs = require('fs')
 const Discord = require("discord.js")
+const Server = require('./functions/server')
+require('dotenv/config')
 const client = new Discord.Client()
 
-const { token, prefix } = require("./config/main.json")
+const { prefix } = require("./config/main.json")
 const dm = require("./functions/dm")
 const ticket = require('./functions/ticket')
 // const mongo = require("./functions/mongo.js")
@@ -41,4 +43,5 @@ client.on('ready', async () => {
 dm(client, "halo bot", reply = "hi juga")
 
 // Token
-client.login(token)
+Server()
+client.login(process.env.TOKEN)
