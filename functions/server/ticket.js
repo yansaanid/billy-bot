@@ -1,4 +1,4 @@
-const firstMsg = require('./first-msg')
+const firstMsg = require('@func/util/first-msg')
 const Discord = require('discord.js')
 const {
   botId,
@@ -8,7 +8,7 @@ const {
   adminId,
   prefix,
   maxSupport
-} = require('../config/main.json')
+} = require('@config/main.json')
 const allowView = [...adminId, botId]
 
 const sleep = ms => {

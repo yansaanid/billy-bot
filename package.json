@@ -11,6 +11,7 @@
     "dotenv": "^8.2.0",
     "env": "^0.0.2",
     "express": "^4.17.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.11.18"
   },
   "scripts": {
@@ -23,5 +24,12 @@
     "discord"
   ],
   "author": "Ian Ardiansyah",
-  "license": "ISC"
+  "license": "ISC",
+  "_moduleAliases": {
+    "@root": ".",
+    "@config": "./config",
+    "@comm": "./commands/comm",
+    "@func": "./functions",
+    "@asset": "./assets"
+  }
 }

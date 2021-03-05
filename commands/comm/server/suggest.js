@@ -1,7 +1,8 @@
 const Discord = require('discord.js')
+
 const {
   prefix
-} = require("../../config/main.json")
+} = require("@config/main.json")
 
 
 module.exports = {
