@@ -4,7 +4,7 @@ const Discord = require("discord.js")
 const client = new Discord.Client()
 
 const { token, prefix } = require("./config/main.json")
-const dm = require("./functions/dm.js")
+const dm = require("./functions/dm")
 const ticket = require('./functions/ticket')
 // const mongo = require("./functions/mongo.js")
 

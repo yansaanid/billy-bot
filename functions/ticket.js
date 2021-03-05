@@ -7,7 +7,7 @@ const {
   serverId,
   adminId
 } = require('../config/main.json')
-const allowView = [adminId, botId]
+const allowView = [...adminId, botId]
 
 const sleep = ms => {
   return new Promise(resolve => setTimeout(resolve, ms));
