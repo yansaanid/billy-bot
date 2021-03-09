@@ -27,8 +27,10 @@
   "_moduleAliases": {
     "@root": ".",
     "@config": "./config",
-    "@comm": "./commands/comm",
-    "@func": "./functions",
+    "@comm": "./commands",
+    "@feature": "./features",
+    "@util": "./util",
+    "@data": "./data-config",
     "@asset": "./assets"
   }
 }

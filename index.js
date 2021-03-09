@@ -7,12 +7,12 @@ const Discord = require("discord.js")
 const chalk = require('chalk')
 const client = new Discord.Client()
 
-const Server = require('@func/util/server')
-const loadComm = require('@root/commands/load')
-const loadFunc = require('@func/load')
+const Server = require('@util/server')
+const loadComm = require('@comm/load-command')
+const loadFunc = require('@feature/load-feature')
 
-const dm = require("@func/util/dm")
-const loadDm = require("@func/data/dm.json")
+const dm = require("@util/dm")
+const loadDm = require("@data/dm.json")
 
 client.on('ready', async () => {
   //console.log(client)

@@ -1,4 +1,4 @@
-const firstMsg = require('@func/util/first-msg')
+const firstMsg = require('@util/first-msg')
 const Discord = require('discord.js')
 const {
   botId,

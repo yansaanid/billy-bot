@@ -3,33 +3,32 @@ const fs = require('fs')
 const chalk = require('chalk')
 
 module.exports = (client) => {
-  const baseFile = 'base-command.js'
-  const commandBase = require(`./${baseFile}`)
-
-  const commands = []
-  let fileName
+  const baseFile = 'base-feature.js'
+  const featureBase = require(`./${baseFile}`)
   
-  console.log(chalk`\n---------- {blue LOAD COMMANDS} ----------`)
+  const functions = []
+  let fileName
 
-  const readCommands = (dir) => {
+console.log(chalk`\n---------- {blue LOAD FEATURES} ----------`)
+
+  const readFeatures = (dir) => {
     const files = fs.readdirSync(path.join(__dirname, dir))
     for (const file of files) {
       const pathFile = path.join(__dirname, dir, file)
       const stat = fs.lstatSync(pathFile)
       if (stat.isDirectory()) {
-        readCommands(path.join(dir, file))
-      } else if (file !== baseFile && file !== 'load.js') {
+          readFeatures(path.join(dir, file))
+      } else if (file !== 'load-feature.js' && file !== baseFile) {
         fileName = file.replace('.js', '')
         const option = require(pathFile)
-        commands.push(option)
+        functions.push(option)
         if (client) {
-          commandBase(client, option, fileName, chalk)
+          featureBase(client, option, fileName, chalk)
         }
       }
     }
   }
 
-  readCommands('.')
-
-  return commands
+  readFeatures('.')
+  return functions
 }
