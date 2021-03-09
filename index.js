@@ -4,6 +4,7 @@ require('module-alias/register')
 
 const { prefix } = require("@config/main.json")
 const Discord = require("discord.js")
+const chalk = require('chalk')
 const client = new Discord.Client()
 
 const Server = require('@func/util/server')
@@ -14,7 +15,8 @@ const dm = require("@func/util/dm")
 const loadDm = require("@func/data/dm.json")
 
 client.on('ready', async () => {
-  console.log(`bot aktif!`)
+  //console.log(client)
+  console.log(chalk`${chalk.bgYellow.black.bold(client.user.username)} is {bgGreen.white.bold Active}`)
   
   loadComm(client)
   loadFunc(client)

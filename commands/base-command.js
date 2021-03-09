@@ -8,7 +8,7 @@
 const {
   prefix,
   botId
-} = require('../config/main.json')
+} = require('@config/main.json')
 
 const validatePermissions = (permissions) => {
   const validPermissions = [
@@ -52,7 +52,7 @@ const validatePermissions = (permissions) => {
   }
 }
 
-module.exports = (client, commandOptions) => {
+module.exports = (client, commandOptions, fileName, chalk) => {
   let {
     commands,
     auto = false,
@@ -65,18 +65,26 @@ module.exports = (client, commandOptions) => {
     channels = [],
     userIds = [],
     bot = 0,
+    enable = true,
     callback,
   } = commandOptions
 
   // Ensure the command and aliases are in an array
+
   if (!auto) {
     if (typeof commands === 'string')
       commands = [commands]
 
-    console.log(`Registering command "${commands[0]}"`)
+    nameCommand = chalk.bgBlue.black.bold(commands[0])
   } else {
-    console.log(`Regestring bot without command in ChnId: "${(typeof channels === 'string')?channels:channels.join(', ')}"`)
+    nameCommand = chalk.bgMagenta.black.bold(fileName)
   }
+  
+  const checkEnabled = (enable)?chalk.green.bold(`ENABLED ✅`):chalk.red.bold(`DISABLE ❌`)
+  
+  console.log(`${nameCommand} is ${checkEnabled}`)
+
+  if (!enable) return
 
   // Ensure the permissions are in an array and are all valid
   if (permissions.length) {
@@ -86,11 +94,11 @@ module.exports = (client, commandOptions) => {
     validatePermissions(permissions)
   }
 
-    if (typeof channels === 'string')
-      channels = [channels]
-  
-    if (typeof userIds === 'string')
-      userIds = [userIds]
+  if (typeof channels === 'string')
+    channels = [channels]
+
+  if (typeof userIds === 'string')
+    userIds = [userIds]
 
   // Listen for messages
   client.on('message', (message) => {
@@ -109,10 +117,10 @@ module.exports = (client, commandOptions) => {
       if (message.channel.id === channelId)
         visibleChn = true
     }
-    
-      if (channels.length === 0)
-        visibleChn = true
-        
+
+    if (channels.length === 0)
+      visibleChn = true
+
     if (!visibleChn) return
 
     if (auto) {
@@ -125,7 +133,7 @@ module.exports = (client, commandOptions) => {
         if (message.author.id === userId)
           visibleUser = true
       }
-      
+
       if (userIds.length === 0)
         visibleUser = true
 
@@ -135,7 +143,7 @@ module.exports = (client, commandOptions) => {
         if (!message.author.bot)
           return
       }
-      
+
       if (bot === -1) {
         if (message.author.bot)
           return
@@ -145,7 +153,7 @@ module.exports = (client, commandOptions) => {
         if (member.hasPermission(permission))
           visiblePerm = true
       }
-      
+
       if (permissions.length === 0)
         visiblePerm = true
 
@@ -159,7 +167,7 @@ module.exports = (client, commandOptions) => {
         if (role || member.roles.cache.has(role.id))
           visibleRole = true
       }
-      
+
       if (requiredRoles.length === 0)
         visibleRole = true
 
