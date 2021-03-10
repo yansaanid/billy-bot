@@ -37,13 +37,13 @@ module.exports = () => {
         } else if (option.commands) {
           status.status.push({
             name: option.commands[0],
-            type: "feature",
+            type: "command",
             status: (option.enable === false)?false:true
           })
         } else {
           status.status.push({
             name: fileName,
-            type: "command",
+            type: "feature",
             status: (option.enable === false)?false:true
           })
         }
