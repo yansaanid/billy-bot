@@ -2,6 +2,9 @@ const path = require('path')
 const fs = require('fs')
 const chalk = require('chalk')
 
+const Discord = require("discord.js")
+const client = new Discord.Client()
+
 module.exports = (client) => {
   const baseFile = 'base-feature.js'
   const featureBase = require(`./${baseFile}`)
