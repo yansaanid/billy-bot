@@ -11,7 +11,7 @@ server.all('/', (req, res)=> {
   res.end()
 })
 
-server.get('/status', (req, res) => res.json(result()))
+server.get('/status', (req, res) => res.status(200).json(result()))
 
 function keepAlive() {
   server.listen(3000, ()=> {
