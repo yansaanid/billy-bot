@@ -9,7 +9,8 @@ const client = new Discord.Client()
 module.exports = () => {
 
   const status = {
-    status:
+    status:true,
+    detail:
     []
   }
   let fileName
@@ -29,19 +30,19 @@ module.exports = () => {
         const option = require(pathFile)
         
         if (option.auto) {
-          status.status.push({
+          status.detail.push({
             name: fileName,
             type: "automation",
             status: (option.enable === false)?false:true
           })
         } else if (option.commands) {
-          status.status.push({
+          status.detail.push({
             name: option.commands[0],
             type: "command",
             status: (option.enable === false)?false:true
           })
         } else {
-          status.status.push({
+          status.detail.push({
             name: fileName,
             type: "feature",
             status: (option.enable === false)?false:true
