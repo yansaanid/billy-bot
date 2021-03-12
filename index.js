@@ -11,9 +11,8 @@ const Server = require('@util/server')
 //const loadComm = require('@comm/load')
 const loadFunc = require('@feature/load-feature')
 
-require('./Main.js')
+const Main = require('@app/Main')
 const main = new Main(prefix,client)
-const loadComm = require('@comm/load')
 
 const dm = require("@util/dm")
 const loadDm = require("@data/dm.json")
@@ -21,7 +20,7 @@ const loadDm = require("@data/dm.json")
 client.on('ready', async () => {
   console.log(chalk`${chalk.bgYellow.black.bold(client.user.username)} is {bgGreen.white.bold Active}`)
   
-  loadComm()
+  main.run()
   loadFunc(client)
 })
 
