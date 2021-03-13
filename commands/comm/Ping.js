@@ -1,5 +1,8 @@
-module.exports = class Ping {
+const Base_command = require('@comm/base')
+
+module.exports = class Ping extends Base_command {
   constructor() {
+    super()
     this.init = {
       //name: "ping",
       desc: "apapun",
@@ -7,8 +10,7 @@ module.exports = class Ping {
     }
   }
   
-  run(msg, args) {
-    console.log(args)
-    //this.send(msg, "nama")
+  run() {
+    this.send("pong")
   }
 }
