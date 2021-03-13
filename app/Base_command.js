@@ -3,7 +3,7 @@ module.exports = class Base_command {
     this.msg = {}
   }
 
-  permission = async (permissions, permissionError = 'You do not have permission to run this command.') => {
+  permission(permissions, permissionError = 'You do not have permission to run this command.') {
     let visiblePerm
 
     const validatePermissions = (permissions) => {
@@ -58,11 +58,25 @@ module.exports = class Base_command {
 
     if (!visiblePerm) {
       msg.reply(permissionError)
-      return false
+      this.nosend = true
     }
+    return this
+  }
+  
+  role(role) {
+    
+  }
+  
+  channel(channel) {
+    
+  }
+  
+  user(user) {
+    
   }
 
   send(result) {
-    this.msg.channel.send(result)
+    if (!this.nosend)
+      this.msg.channel.send(result)
   }
 }
