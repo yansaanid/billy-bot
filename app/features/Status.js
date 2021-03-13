@@ -1,10 +1,8 @@
 module.exports = class Status {
   constructor() {
-    //super()
     this.init = {
-      //name: "ping",
-      desc: "apapun",
-      enable: false
+      name: "status bot",
+      desc: "apapun"
     }
   }
   

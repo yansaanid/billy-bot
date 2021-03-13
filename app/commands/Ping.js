@@ -1,4 +1,4 @@
-const Base_command = require('@comm/base')
+const Base_command = require('@app/Base_command')
 
 module.exports = class Ping extends Base_command {
   constructor() {
