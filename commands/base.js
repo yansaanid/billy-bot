@@ -1,9 +1,9 @@
 module.exports = class Base_command {
   constructor() {}
 
-  permission = async (permission, permissionError = 'You do not have permission to run this command.') => {
+  permission = async (permissions, permissionError = 'You do not have permission to run this command.') => {
     let visiblePerm
-    
+
     const validatePermissions = (permissions) => {
       const validPermissions = [
         'CREATE_INSTANT_INVITE',
@@ -42,23 +42,24 @@ module.exports = class Base_command {
       for (const permission of permissions) {
         if (!validPermissions.includes(permission)) {
           throw new Error(`Unknown permission node "${permission}"`)
+          return false
         }
       }
     }
 
     for (const permission of permissions) {
-      if (member.hasPermission(permission))
+      if (this.msg.member.hasPermission(permission))
         visiblePerm = true
     }
 
     if (permissions.length === 0) visiblePerm = true
 
     if (!visiblePerm) {
-      message.reply(permissionError)
+      msg.reply(permissionError)
       return false
     }
   }
-  
+
   send(result) {
     this.msg.channel.send(result)
   }
