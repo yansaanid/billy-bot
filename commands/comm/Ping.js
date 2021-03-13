@@ -7,7 +7,8 @@ module.exports = class Ping {
     }
   }
   
-  run() {
-    //this.send("nama")
+  run(msg, args) {
+    console.log(args)
+    //this.send(msg, "nama")
   }
 }
