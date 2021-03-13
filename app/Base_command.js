@@ -1,7 +1,6 @@
 module.exports = class Base_command {
   constructor() {
     this.msg = {}
-
   }
 
   permission(permissions, permissionError = 'You do not have permission to run this command.', enable = true) {
@@ -84,12 +83,12 @@ module.exports = class Base_command {
 
     for (const userId of userIds) {
       let myUser = `<@${guild.members.cache.filter(r => r.id === userId).name}>`
-      
+
       if (countChannel > 1)
         thisUser += (!--countChannel)?`and ***${myUser}***`: `***${myRole}***, `
       else
         thisUser = `***${myUser}***`
-      
+
       if (message.author.id === userId)
         visibleUser = true
     }
