@@ -79,9 +79,9 @@ module.exports = (client, commandOptions, fileName, chalk) => {
   } else {
     nameCommand = chalk.bgMagenta.black.bold(fileName)
   }
-  
-  const checkEnabled = (enable)?chalk.green.bold(`ENABLED ✅`):chalk.red.bold(`DISABLE ❌`)
-  
+
+  const checkEnabled = (enable)?chalk.green.bold(`ENABLED ✅`): chalk.red.bold(`DISABLE ❌`)
+
   console.log(`${nameCommand} is ${checkEnabled}`)
 
   if (!enable) return
@@ -99,6 +99,9 @@ module.exports = (client, commandOptions, fileName, chalk) => {
 
   if (typeof userIds === 'string')
     userIds = [userIds]
+    
+  if (typeof requiredRoles === 'string')
+    requiredRoles = [requiredRoles]
 
   // Listen for messages
   client.on('message', (message) => {
@@ -200,12 +203,25 @@ module.exports = (client, commandOptions, fileName, chalk) => {
         }
 
         // Ensure the user has the required roles
-        for (const requiredRole of requiredRoles) {
-          const role = guild.roles.cache.find(
-            (role) => role.name === requiredRole
-          )
+        let thisRole = ""
+        let totalRole = requiredRoles.length
 
-          if (!role || !member.roles.cache.has(role.id))
+        for (const requiredRole of requiredRoles) {
+          let myRole
+          if (isNaN(requiredRole))
+            myRole = requiredRole
+          else
+            myRole = guild.roles.cache.filter(r => r.id === requiredRole).name
+
+          if (totalRole > 1)
+            thisRole += (!--totalRole)?`and ***${myRole}***`:`***${myRole}***, `
+           else
+            thisRole = myRole
+
+          const role = guild.roles.cache.find(
+            (role) => role.name === requiredRole || role.id === requiredRole)
+
+          if (role)
             visibleRole = true
         }
 
@@ -213,8 +229,7 @@ module.exports = (client, commandOptions, fileName, chalk) => {
 
         if (!visibleRole) {
           message.reply(
-            `You must have the ***"${requiredRole}"*** role to use this command.`
-          )
+            `You must have role "${thisRole}" to use this command.`)
           return
         }
 

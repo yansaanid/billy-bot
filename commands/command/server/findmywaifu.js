@@ -3,6 +3,7 @@ module.exports = {
     'fmw'],
   expectedArgs: '<function> <name-waifu>',
   minArgs: '1',
+  requiredRoles: '817466270039015504',
   enable: false,
   callback: (msg, args, text) => {
     console.log(args[0])
