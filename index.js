@@ -15,7 +15,6 @@ const dm = require("@util/dm")
 const loadDm = require("@data/dm.json")
 
 client.on('ready', async () => {
-  //console.log(client)
   console.log(chalk`${chalk.bgYellow.black.bold(client.user.username)} is {bgGreen.white.bold Active}`)
   
   loadComm(client)
