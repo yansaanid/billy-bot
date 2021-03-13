@@ -60,9 +60,12 @@ module.exports = class Base_command {
     
     run(callback) {
       if (!this.permission) return false
-
-
     }
     
+  }
+  
+  
+  send(msg, result) {
+    msg.channel.send(result)
   }
 }

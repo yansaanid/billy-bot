@@ -8,7 +8,7 @@ module.exports = class Main {
   }
 
   run() {
-    const readFeatures = (dir, message) => {
+    const readFeatures = (dir) => {
       const files = fs.readdirSync(path.join(__dirname, dir))
       for (const file of files) {
         const stat = fs.lstatSync(path.join(__dirname, dir, file))
@@ -18,6 +18,7 @@ module.exports = class Main {
           const Feature = require(path.join(__dirname, dir, file))
           Feature.prototype.prefix = this.prefix
           Feature.prototype.client = this.client
+          let args
 
           console.log(`Enabling feature "${file}"`)
           const feature = new Feature()
@@ -31,17 +32,28 @@ module.exports = class Main {
             feature.init.enable = true
 
           console.log(feature.init)
-          //if (message) {
-          //feature.run(message)
-          //feature.help(message)
-          //}
+          this.client.on('message', msg => {
+            if (feature.init.commands) {
+              for (const alias of feature.init.commands) {
+                const command = `${feature.prefix}${alias.toLowerCase()}`
+
+                if (
+                  msg.content.toLowerCase().startsWith(`${command} `) ||
+                  content.toLowerCase() === command) {
+                   feature.run(msg, msg.content.match(/"[^"]+"|[^\s]+/g).map(e => e.replace(/"(.+)"/, "$1")))
+                }
+              }
+            } else {
+              feature.run(msg, args)
+            }
+
+            //feature.help(message)
+          })
         }
       }
     }
 
-    //this.client.on('message', (message) => {
     readFeatures('../commands/comm')
-    //})
 
   }
 }
