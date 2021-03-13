@@ -1,6 +1,7 @@
 module.exports = class Base_command {
   constructor() {
     this.msg = {}
+
   }
 
   permission(permissions, permissionError = 'You do not have permission to run this command.', enable = true) {
@@ -17,14 +18,14 @@ module.exports = class Base_command {
 
     if (!visiblePerm) {
       if (enable)
-        msg.reply(permissionError)
+        this.msg.reply(permissionError)
       this.nosend = true
     }
     return this
   }
 
 
-  role(roles, msg, enable) {
+  role(roles, msg = `You must have role "${thisRole}" to use this command.`, enable = true) {
     let visibleRole = false
     const requiredRoles = this.#checkArray(roles)
     let thisRole = ""
@@ -35,30 +36,74 @@ module.exports = class Base_command {
       if (isNaN(requiredRole))
         myRole = requiredRole
       else
-        myRole = this.client.roles.cache.find(r => r.id === requiredRole)
+        myRole = guild.roles.cache.filter(r => r.id === requiredRole).name
 
-      thisRole += (!--totalRole)?`and ***${myRole}***`: `***${myRole}***, `
+      if (totalRole > 1)
+        thisRole += (!--totalRole)?`and ***${myRole}***`: `***${myRole}***, `
+      else
+        thisRole = `***${myRole}***`
 
       const role = guild.roles.cache.find(
         (role) => role.name === requiredRole || role.id === requiredRole)
 
-      if (role || member.roles.cache.has(role.id))
+      if (role)
         visibleRole = true
     }
 
     if (requiredRoles.length === 0) visibleRole = true
 
     if (!visibleRole) {
-      message.reply(
-        `You must have role "${thisRole}" to use this command.`)
+      if (enable === true)
+        this.msg.reply(msg)
       this.nosend = true
     }
     return this
   }
 
-  channel(channel) {}
+  channel(channel) {
+    let visibleChn = false
+    const channels = this.#checkArray(channel)
 
-  user(user) {}
+    for (const channelId of channels) {
+      if (message.channel.id === channelId)
+        visibleChn = true
+    }
+
+    if (channels.length === 0)
+      visibleChn = true
+
+    if (!visibleChn) this.nosend = true
+    return this
+  }
+
+  user(user, msg = `Only ${thisUser} to use this command`, enable = false) {
+    let visibleUser = false
+    const userIds = this.checkArray(user)
+    let thisUser = ''
+    const countChannel = userIds.length
+
+    for (const userId of userIds) {
+      let myUser = `<@${guild.members.cache.filter(r => r.id === userId).name}>`
+      
+      if (countChannel > 1)
+        thisUser += (!--countChannel)?`and ***${myUser}***`: `***${myRole}***, `
+      else
+        thisUser = `***${myUser}***`
+      
+      if (message.author.id === userId)
+        visibleUser = true
+    }
+
+    if (userIds.length === 0)
+      visibleUser = true
+
+    if (!visibleUser) {
+      if (enable)
+        this.msg.reply(msg)
+      this.nosend = true
+    }
+    return this
+  }
 
   send(result) {
     if (!this.nosend)
