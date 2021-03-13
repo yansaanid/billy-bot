@@ -10,8 +10,8 @@ module.exports = class Main {
   }
 
   run() {
-    this.readFeatures('../commands/comm', 'commands')
-    this.readFeatures('../features/feat', 'features')
+    this.readFeatures('commands')
+    this.readFeatures('features')
   }
 
   checkInit(init, file) {
@@ -59,9 +59,8 @@ module.exports = class Main {
     console.log(`${i.name} is ${checkEnabled}`)
   }
 
-  readFeatures(dir,
-    name) {
-    console.log(chalk`\n---------- {blue LOAD ${name.toUpperCase()}} ----------`)
+  readFeatures(dir) {
+    console.log(chalk`\n---------- {blue LOAD ${dir.toUpperCase()}} ----------`)
     const files = fs.readdirSync(path.join(__dirname, dir))
     for (const file of files) {
       const stat = fs.lstatSync(path.join(__dirname, dir, file))
@@ -73,12 +72,12 @@ module.exports = class Main {
         Feature.prototype.client = this.client
 
         const feature = new Feature()
-        this.runFeature(feature, file, name)
+        this.runFeature(feature, file)
       }
     }
   }
 
-  runFeature(f, fl, name) {
+  runFeature(f, fl) {
     this.checkInit(f.init, fl)
     if (f.msg) {
       this.sendMessages(f)
