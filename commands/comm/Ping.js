@@ -10,7 +10,12 @@ module.exports = class Ping extends Base_command {
     }
   }
   
-  run() {
-    this.send("pong")
+  run(args) {
+    if (args.length === 0)
+      this.send("pong")
+    else {
+      if (this.permission(['ADMINISTRATOR']))
+        this.send('admin pong')
+    }
   }
 }

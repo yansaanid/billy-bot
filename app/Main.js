@@ -40,13 +40,13 @@ module.exports = class Main {
             args = msg.content.match(/"[^"]+"|[^\s]+/g).map(e => e.replace(/"(.+)"/, "$1"))
 
             args.shift()
+            return f.run(args)
           }
         }
+      } else {
+        return f.run()
       }
 
-      if (msg.author.id === this.botId) return
-      f.msg = msg
-      f.run(args)
       //feature.help(message)
     })
   }
