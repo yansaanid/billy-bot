@@ -164,10 +164,9 @@ module.exports = (client, commandOptions, fileName, chalk) => {
 
       for (const requiredRole of requiredRoles) {
         const role = guild.roles.cache.find(
-          (role) => role.name === requiredRole
-        )
+            (role) => role.name === requiredRole || role.id === requiredRole)
 
-        if (role || member.roles.cache.has(role.id))
+        if (role)
           visibleRole = true
       }
 
