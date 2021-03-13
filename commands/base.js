@@ -1,5 +1,7 @@
 module.exports = class Base_command {
-  constructor() {}
+  constructor() {
+    this.msg = {}
+  }
 
   permission = async (permissions, permissionError = 'You do not have permission to run this command.') => {
     let visiblePerm
