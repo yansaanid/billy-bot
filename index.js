@@ -2,7 +2,7 @@ require('dotenv/config')
 require('module-alias/register')
 // const mongo = require("@func/util/mongo.js")
 
-const { prefix } = require("@config/main.json")
+const { prefix, botId } = require("@config/main.json")
 const Discord = require("discord.js")
 const chalk = require('chalk')
 const client = new Discord.Client()
@@ -12,7 +12,7 @@ const Server = require('@util/server')
 const loadFunc = require('@feature/load-feature')
 
 const Main = require('@app/Main')
-const main = new Main(prefix,client)
+const main = new Main(prefix,client, botId)
 
 const dm = require("@util/dm")
 const loadDm = require("@data/dm.json")
