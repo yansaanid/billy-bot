@@ -11,6 +11,7 @@ module.exports = class Main {
 
   run() {
     this.readFeatures('../commands/comm', 'commands')
+    this.readFeatures('../features/feat', 'features')
   }
 
   checkInit(init, file) {
@@ -20,7 +21,7 @@ module.exports = class Main {
     if (!init.name)
       init.name = file.replace('.js', '').toLowerCase()
 
-    if (!init.enable)
+    if (!init.enable && init.enable !== false)
       init.enable = true
   }
 
@@ -28,6 +29,7 @@ module.exports = class Main {
     let args
 
     if (!f.init.enable) return
+
     this.client.on('message', msg => {
       f.msg = msg
       if (f.init.command) {
@@ -69,7 +71,6 @@ module.exports = class Main {
         const Feature = require(path.join(__dirname, dir, file))
         Feature.prototype.prefix = this.prefix
         Feature.prototype.client = this.client
-        Feature.prototype.msg = {}
 
         const feature = new Feature()
         this.runFeature(feature, file, name)
@@ -79,7 +80,12 @@ module.exports = class Main {
 
   runFeature(f, fl, name) {
     this.checkInit(f.init, fl)
-    this.sendMessages(f)
+    if (f.msg) {
+      this.sendMessages(f)
+    } else {
+      if (f.init.enable)
+        f.run()
+    }
     this.checkConsole(f.init)
   }
 }

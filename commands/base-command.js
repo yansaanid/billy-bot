@@ -79,9 +79,9 @@ module.exports = (client, commandOptions, fileName, chalk) => {
   } else {
     nameCommand = chalk.bgMagenta.black.bold(fileName)
   }
-  
-  const checkEnabled = (enable)?chalk.green.bold(`ENABLED ✅`):chalk.red.bold(`DISABLE ❌`)
-  
+
+  const checkEnabled = (enable)?chalk.green.bold(`ENABLED ✅`): chalk.red.bold(`DISABLE ❌`)
+
   console.log(`${nameCommand} is ${checkEnabled}`)
 
   if (!enable) return
