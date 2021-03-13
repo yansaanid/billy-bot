@@ -32,7 +32,6 @@
     "@feature": "./features",
     "@util": "./util",
     "@data": "./data-config",
-    "@asset": "./assets",
-    "@app": "./app"
+    "@asset": "./assets"
   }
 }
