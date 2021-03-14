@@ -14,7 +14,7 @@ module.exports = class Main {
     this.#read('features')
   }
 
-  #checkInit(init, file) {
+  #checkInit(f, init, file) {
     if (typeof init !== "object")
       throw new Error("init object not exist")
 
@@ -23,6 +23,14 @@ module.exports = class Main {
 
     if (!init.enable && init.enable !== false)
       init.enable = true
+
+    if (f.msg) {
+      if (!init.minArgs)
+        init.minArgs = 0
+
+      if (!init.maxArgs)
+        init.maxArgs = null
+    }
   }
 
   #sendMessages(f) {
@@ -42,6 +50,12 @@ module.exports = class Main {
             args = msg.content.match(/"[^"]+"|[^\s]+/g).map(e => e.replace(/"(.+)"/, "$1"))
 
             args.shift()
+
+            if (args.length < f.init.minArgs || (f.init.maxArgs !== null && args.length > f.init.maxArgs)) {
+              message.reply(`Incorrect syntax! Use ***${prefix}${alias} ${expectedArgs}***`)
+              return
+            }
+
             return f.run(args)
           }
         }
@@ -54,7 +68,8 @@ module.exports = class Main {
     })
   }
 
-  #checkConsole(o, i) {
+  #checkConsole(o,
+    i) {
     let nameConsole
 
     if (o.msg) {
@@ -91,7 +106,7 @@ module.exports = class Main {
   }
 
   #runFunction(f, fl) {
-    this.#checkInit(f.init, fl)
+    this.#checkInit(f, f.init, fl)
     if (f.msg) {
       this.#sendMessages(f)
     } else {
