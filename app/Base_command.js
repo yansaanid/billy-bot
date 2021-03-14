@@ -54,9 +54,11 @@ module.exports = class Base_command {
     }
 
     if (requiredRoles.length === 0) visibleRole = true
-    
-    const cutMsg = msg.split(`$thisRole`)
-    msg = cutMsg[0] + thisRole + cutMsg[1]
+
+    if (msg.includes('$thisRole')) {
+      const cutMsg = msg.split(`$thisRole`)
+      msg = cutMsg[0] + thisRole + cutMsg[1]
+    }
 
     if (!visibleRole) {
       if (enable === true)
@@ -81,7 +83,7 @@ module.exports = class Base_command {
         thisChn += (!--countChannel)?`and ***${myChn}***`: `***${myChn}***, `
       else
         thisChn = `***${myChn}***`
-        
+
       if (message.channel.id === channelId)
         visibleChn = true
     }
@@ -89,8 +91,10 @@ module.exports = class Base_command {
     if (channels.length === 0)
       visibleChn = true
 
-    const cutMsg = msg.split(`$thisChn`)
-    msg = cutMsg[0] + thisChn + cutMsg[1]
+    if (msg.includes('$thisChn')) {
+      const cutMsg = msg.split(`$thisChn`)
+      msg = cutMsg[0] + thisChn + cutMsg[1]
+    }
 
     if (!visibleChn) {
       if (enable)
@@ -123,9 +127,11 @@ module.exports = class Base_command {
     if (userIds.length === 0)
       visibleUser = true
 
-    const cutMsg = msg.split(`$thisUser`)
-    msg = cutMsg[0] + thisUser + cutMsg[1]
-    
+    if (msg.includes('$thisUser')) {
+      const cutMsg = msg.split(`$thisUser`)
+      msg = cutMsg[0] + thisUser + cutMsg[1]
+    }
+
     if (!visibleUser) {
       if (enable)
         this.msg.reply(msg)
