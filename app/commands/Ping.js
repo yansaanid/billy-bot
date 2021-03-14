@@ -14,7 +14,7 @@ module.exports = class Ping extends Base_command {
     if (args.length === 0)
       this.send("pong")
     else {
-      this.permission(['ADMINISTRATOR']).send('admin pong')
+      this.role(`sedang melakukan hal`).send('admin pong')
     }
   }
 }

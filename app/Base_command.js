@@ -4,6 +4,8 @@ module.exports = class Base_command {
   }
 
   permission(permissions, permissionError = 'You do not have permission to run this command.', enable = true) {
+    if (this.nosend) return this
+
     let visiblePerm = false
     const perm = this.#checkArray(permissions, "permission")
     this.#validatePermissions(perm)
@@ -24,7 +26,9 @@ module.exports = class Base_command {
   }
 
 
-  role(roles, msg = `You must have role "${thisRole}" to use this command.`, enable = true) {
+  role(roles, msg = `You must have role $thisRole to use this command.`, enable = true) {
+    if (this.nosend) return this
+
     let visibleRole = false
     const requiredRoles = this.#checkArray(roles)
     let thisRole = ""
@@ -35,21 +39,24 @@ module.exports = class Base_command {
       if (isNaN(requiredRole))
         myRole = requiredRole
       else
-        myRole = guild.roles.cache.filter(r => r.id === requiredRole).name
+        myRole = this.msg.guild.roles.cache.filter(r => r.id === requiredRole).name
 
       if (totalRole > 1)
         thisRole += (!--totalRole)?`and ***${myRole}***`: `***${myRole}***, `
       else
         thisRole = `***${myRole}***`
 
-      const role = guild.roles.cache.find(
-        (role) => role.name === requiredRole || role.id === requiredRole)
+      const role = this.msg.guild.roles.cache.find(
+        (role) => role.name.toLowerCase === requiredRole || role.id === requiredRole)
 
       if (role)
         visibleRole = true
     }
 
     if (requiredRoles.length === 0) visibleRole = true
+    
+    const cutMsg = msg.split(`$thisRole`)
+    msg = cutMsg[0] + thisRole + cutMsg[1]
 
     if (!visibleRole) {
       if (enable === true)
@@ -59,11 +66,22 @@ module.exports = class Base_command {
     return this
   }
 
-  channel(channel) {
+  channel(channel, msg = `Only in channel $thisChn to use this command`, enable = false) {
+    if (this.nosend) return this
+
     let visibleChn = false
     const channels = this.#checkArray(channel)
+    let thisChn = ''
+    const countChannel = channels.length
 
     for (const channelId of channels) {
+      let myChn = `<#${this.msg.guild.channels.cache.filter(r => r.id === channelId).name}>`
+
+      if (countChannel > 1)
+        thisChn += (!--countChannel)?`and ***${myChn}***`: `***${myChn}***, `
+      else
+        thisChn = `***${myChn}***`
+        
       if (message.channel.id === channelId)
         visibleChn = true
     }
@@ -71,21 +89,30 @@ module.exports = class Base_command {
     if (channels.length === 0)
       visibleChn = true
 
-    if (!visibleChn) this.nosend = true
+    const cutMsg = msg.split(`$thisChn`)
+    msg = cutMsg[0] + thisChn + cutMsg[1]
+
+    if (!visibleChn) {
+      if (enable)
+        this.msg.reply(msg)
+      this.nosend = true
+    }
     return this
   }
 
-  user(user, msg = `Only ${thisUser} to use this command`, enable = false) {
+  user(user, msg = `Only $thisUser to use this command`, enable = false) {
+    if (this.nosend) return this
+
     let visibleUser = false
     const userIds = this.checkArray(user)
     let thisUser = ''
-    const countChannel = userIds.length
+    const countUser = userIds.length
 
     for (const userId of userIds) {
-      let myUser = `<@${guild.members.cache.filter(r => r.id === userId).name}>`
+      let myUser = `<@${this.msg.guild.members.cache.filter(r => r.id === userId).name}>`
 
-      if (countChannel > 1)
-        thisUser += (!--countChannel)?`and ***${myUser}***`: `***${myRole}***, `
+      if (countUser > 1)
+        thisUser += (!--countUser)?`and ***${myUser}***`: `***${myRole}***, `
       else
         thisUser = `***${myUser}***`
 
@@ -96,6 +123,9 @@ module.exports = class Base_command {
     if (userIds.length === 0)
       visibleUser = true
 
+    const cutMsg = msg.split(`$thisUser`)
+    msg = cutMsg[0] + thisUser + cutMsg[1]
+    
     if (!visibleUser) {
       if (enable)
         this.msg.reply(msg)
