@@ -47,7 +47,7 @@ module.exports = class Base_command {
         thisRole = `***${myRole}***`
 
       const role = this.msg.guild.roles.cache.find(
-        (role) => role.name.toLowerCase === requiredRole || role.id === requiredRole)
+        (role) => role.name.toLowerCase() === requiredRole.toLowerCase() || role.id === requiredRole)
 
       if (role)
         visibleRole = true
