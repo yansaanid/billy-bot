@@ -47,17 +47,29 @@ module.exports = class Main {
         }
       } else {
         if (msg.author.id === botId)
-        return f.run()
+          return f.run()
       }
 
       //feature.help(message)
     })
   }
 
-  #checkConsole(i) {
+  #checkConsole(o, i) {
+    let nameConsole
+
+    if (o.msg) {
+      if (i.command) {
+        nameConsole = chalk.bgBlue.black.bold(i.name)
+      } else {
+        nameConsole = chalk.bgMagenta.black.bold(i.name)
+      }
+    } else {
+      nameConsole = chalk.cyan.bgBlack.bold(i.name)
+    }
+
     const checkEnabled = (i.enable)?chalk.green.bold(`ENABLED ✅`): chalk.red.bold(`DISABLE ❌`)
 
-    console.log(`${i.name} is ${checkEnabled}`)
+    console.log(`${nameConsole} is ${checkEnabled}`)
   }
 
   #read(dir) {
@@ -86,6 +98,6 @@ module.exports = class Main {
       if (f.init.enable)
         f.run()
     }
-    this.#checkConsole(f.init)
+    this.#checkConsole(f, f.init)
   }
 }
