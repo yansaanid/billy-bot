@@ -68,8 +68,7 @@ module.exports = class Main {
     })
   }
 
-  #checkConsole(o,
-    i) {
+  #checkConsole(o,i) {
     let nameConsole
 
     if (o.msg) {
